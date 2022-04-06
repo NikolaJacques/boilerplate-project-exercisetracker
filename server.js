@@ -125,7 +125,7 @@ app
       res.json(error.message)
     }
   })
-  .get('/api/users', async (req, res) => {
+  .get('api/users', async (req, res) => {
     try {
       const users = await getAllUsers()
       res.json(users)
