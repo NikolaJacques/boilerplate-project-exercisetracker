@@ -68,4 +68,4 @@ const userSchema = new Schema({
   
   module.exports.User = mongoose.model("User", userSchema)
   module.exports.Exercise = mongoose.model("Exercise", exerciseSchema)
-  module.exports.Log = mongoose.model("Log", userLogSchema)
+  module.exports.userLog = mongoose.model("userLog", userLogSchema)

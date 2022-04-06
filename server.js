@@ -157,45 +157,5 @@ app
       console.log(error.message)
     }
   })
-
-/*   .get('/api/users/:id/logs', async (req, res, next) => {
-    try {
-      if (req.query.from) {
-        req.logs = await req.logs.where(new Date(req.logs.date)).get(new Date(req.query.from))
-        next()
-      } else {
-        next()
-      }
-    }
-    catch (error) {
-      console.log(error.message)
-    }
-  })
-  .get('/api/users/:id/logs', async (req, res, next) => {
-    try {
-      if (req.query.to) {
-        req.logs = await req.logs.where(new Date(req.logs.date)).let(new Date(req.query.to))
-        next()
-      } else {
-        next()
-      }
-    }
-    catch (error) {
-      console.log(error.message)
-    }
-  })
-  .get('/api/users/:id/logs', async (req, res) => {
-    try {
-      if (req.query.limit) {
-        req.logs = await req.logs.limit(req.query.limit)
-        res.json(req.logs)
-      } else {
-        res.json(req.logs)
-      }
-    }
-    catch (error) {
-      console.log(error.message)
-    }
-  }) */
   
    
