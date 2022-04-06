@@ -41,9 +41,9 @@ const createAndSaveUser = async (userNameString) => {
   return user
 }
 
-const createAndSaveExercise = async (id, description, duration, date) => {
+const createAndSaveExercise = async (_id, description, duration, date) => {
   const exercise = new Exercise ({
-    _id: id,
+    _id,
     description,
     duration,
     date
