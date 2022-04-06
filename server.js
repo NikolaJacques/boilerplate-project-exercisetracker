@@ -43,10 +43,10 @@ const createAndSaveUser = async (userNameString) => {
 
 const createAndSaveExercise = async (_id, description, duration, date) => {
   const exercise = new Exercise ({
-    _id,
-    description,
-    duration,
-    date
+    _id: _id,
+    description: description,
+    duration: duration,
+    date: date
   })
   await exercise.populate({path: "username", select: {username: 1}})
   await exercise.save()
