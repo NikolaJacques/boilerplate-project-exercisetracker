@@ -106,4 +106,12 @@ app
       console.log(error.message)
     }
   })
-  
+  .get('/api/users/:id/logs', async (req, res) => {
+    try {
+      res.send(req.query)
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  })
+   
