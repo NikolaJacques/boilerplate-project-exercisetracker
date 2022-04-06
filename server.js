@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
 const {User, Exercise, userLog} = schemas
@@ -15,6 +16,11 @@ app.get('/', (req, res) => {
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
+
+// parser middleware
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // solution
 
