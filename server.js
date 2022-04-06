@@ -143,7 +143,7 @@ app
       res.json(exercise)
     }
     catch (error) {
-      res.json(error.message, req.body)
+      res.json(`${error.message} ${req.body}`)
     }
   })
   .get('/api/users/:id/logs', async (req, res) => {
