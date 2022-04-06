@@ -27,3 +27,41 @@ mongoose.connect(
   error => console.log(error.message)
 );
 
+const createAndSaveUser = async (userNameString) => {
+  const user = new User ({
+    username : userNameString
+  })
+  await user.save()
+  return user
+}
+
+const getAllUsers = async () => {
+  const users = await User.find()
+  return users
+}
+
+// handlers
+
+app
+  .post('/api/users', async (req, res) => {
+    try {
+      const user = await createAndSaveUser(req.username)
+      res.json(user)
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  })
+  .get('api/users', async (req, res) => {
+    try {
+      const users = await getAllUsers()
+      res.json(users)
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  })
+  .post('/api/users/:id/exercises', async (req, res) => {
+
+  })
+  
