@@ -41,9 +41,9 @@ const createAndSaveUser = async (userNameString) => {
   return user
 }
 
-const createAndSaveExercise = async (id, description, duration, date) => {
+const createAndSaveExercise = async (_id, description, duration, date) => {
   const exercise = new Exercise ({
-    _id: id,
+    _id,
     description,
     duration,
     date
@@ -143,7 +143,7 @@ app
       res.json(exercise)
     }
     catch (error) {
-      res.json(error.message)
+      res.send(`${error.message} ${req.body}`)
     }
   })
   .get('/api/users/:id/logs', async (req, res) => {
