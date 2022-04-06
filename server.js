@@ -4,7 +4,7 @@ const cors = require('cors')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
-const {User, Exercise, Log} = schemas
+const {User, Exercise, userLog} = schemas
 
 app.use(cors())
 app.use(express.static('public'))
@@ -48,10 +48,10 @@ const createAndSaveExercise = async (id, description, duration, date) => {
 }
 
 const updateLogs = async (exercise) => {
-  let log = await Log.findOne({'_id': exercise._id})
+  let log = await userLog.findOne({'_id': exercise._id})
   if (!log) {
     let exercises = await Exercise.find({'_id': exercise._id}).select({'username': -1, '_id': -1})
-    log = await new Log({
+    log = await new userLog({
       _id: exercise._id,
       log: exercises
     })
