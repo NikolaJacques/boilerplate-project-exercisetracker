@@ -43,10 +43,10 @@ const createAndSaveUser = async (userNameString) => {
 
 const createAndSaveExercise = async (_id, description, duration, date) => {
   const exercise = new Exercise ({
-    _id: _id,
-    description: description,
-    duration: duration,
-    date: date
+    _id,
+    description,
+    duration,
+    date
   })
   await exercise.populate({path: "username", select: {username: 1}})
   await exercise.save()
@@ -143,7 +143,7 @@ app
       res.json(exercise)
     }
     catch (error) {
-      res.json(error.message)
+      res.json(error.message, req.body)
     }
   })
   .get('/api/users/:id/logs', async (req, res) => {
