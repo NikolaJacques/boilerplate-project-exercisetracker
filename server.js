@@ -4,6 +4,7 @@ const cors = require('cors')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
+const { get } = require('express/lib/response')
 const {User, Exercise, userLog} = schemas
 
 app.use(cors())
@@ -73,6 +74,37 @@ const getAllUsers = async () => {
   return users
 }
 
+const filterLogs = (logs, params) => {
+  return logs
+    .filter( (log) => { // from filter
+      if (!params.from) {
+        return log
+      } else {
+        if (new Date(logs.date) >= new Date(params.from)){
+          return log
+        }
+      }
+    })
+    .filter( (log) => {
+      if (!params.to) {
+        return log
+      } else {
+        if (new Date(logs.date) <= new Date(params.to)){
+          return log
+        }
+      }
+    })
+    .filter( (log, index) => {
+      if (!params.limit) {
+        return log
+      } else {
+        if (index < params.limit) {
+          return log
+        }
+      }
+    })
+}
+
 // handlers
 
 app
@@ -108,10 +140,59 @@ app
   })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
-      res.send(req.query)
+      const logs = await userLog.findOne({"_id": req.body.id})
+      if (Object.keys(req.query).length) {
+        res.json(logs)
+      } else {
+        res.json({
+          ...logs,
+          log: filterLogs(logs.log, req.query)
+        })
+      }
     }
     catch (error) {
       console.log(error.message)
     }
   })
+
+/*   .get('/api/users/:id/logs', async (req, res, next) => {
+    try {
+      if (req.query.from) {
+        req.logs = await req.logs.where(new Date(req.logs.date)).get(new Date(req.query.from))
+        next()
+      } else {
+        next()
+      }
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  })
+  .get('/api/users/:id/logs', async (req, res, next) => {
+    try {
+      if (req.query.to) {
+        req.logs = await req.logs.where(new Date(req.logs.date)).let(new Date(req.query.to))
+        next()
+      } else {
+        next()
+      }
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  })
+  .get('/api/users/:id/logs', async (req, res) => {
+    try {
+      if (req.query.limit) {
+        req.logs = await req.logs.limit(req.query.limit)
+        res.json(req.logs)
+      } else {
+        res.json(req.logs)
+      }
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  }) */
+  
    
