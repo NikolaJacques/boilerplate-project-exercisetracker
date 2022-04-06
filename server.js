@@ -4,7 +4,6 @@ const cors = require('cors')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
-const { get } = require('express/lib/response')
 const {User, Exercise, userLog} = schemas
 
 app.use(cors())
@@ -117,7 +116,7 @@ app
       res.json(user)
     }
     catch (error) {
-      console.log(error.message)
+      res.json(error.message)
     }
   })
   .get('api/users', async (req, res) => {
@@ -126,7 +125,7 @@ app
       res.json(users)
     }
     catch (error) {
-      console.log(error.message)
+      res.json(error.message)
     }
   })
   .post('/api/users/:id/exercises', async (req, res) => {
@@ -138,7 +137,7 @@ app
       res.json(exercise)
     }
     catch (error) {
-      console.log(error.message)
+      res.json(error.message)
     }
   })
   .get('/api/users/:id/logs', async (req, res) => {
@@ -154,7 +153,7 @@ app
       }
     }
     catch (error) {
-      console.log(error.message)
+      res.json(error.message)
     }
   })
   
