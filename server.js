@@ -76,7 +76,8 @@ const getAllUsers = async () => {
 
 const filterLogs = (logs, params) => {
   return logs
-    .filter( (log) => { // from filter
+    // from filter
+    .filter( (log) => {
       if (!params.from) {
         return log
       } else {
@@ -85,7 +86,8 @@ const filterLogs = (logs, params) => {
         }
       }
     })
-    .filter( (log) => {
+    // to filter
+    .filter( (log) => { 
       if (!params.to) {
         return log
       } else {
@@ -94,6 +96,7 @@ const filterLogs = (logs, params) => {
         }
       }
     })
+    // limit filter
     .filter( (log, index) => {
       if (!params.limit) {
         return log
