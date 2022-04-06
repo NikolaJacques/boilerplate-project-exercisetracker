@@ -125,14 +125,14 @@ app
       res.json(error.message)
     }
   })
-  .get('api/users', async (req, res) => {
+  .get('/api/users', async (req, res) => {
     try {
       const users = await getAllUsers()
       res.json(users)
     }
     catch (error) {
       res.json(error.message)
-    }
+    }   
   })
   .post('/api/users/:id/exercises', async (req, res) => {
     try {
@@ -143,7 +143,7 @@ app
       res.json(exercise)
     }
     catch (error) {
-      res.send(`${error.message} ${req.body}`)
+      res.json(error.message)
     }
   })
   .get('/api/users/:id/logs', async (req, res) => {
