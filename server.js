@@ -75,7 +75,7 @@ const updateLogs = async (exercise) => {
 }
 
 const getAllUsers = async () => {
-  const users = await User.find()
+  const users = await User.find({})
   return users
 }
 
