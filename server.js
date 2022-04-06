@@ -35,6 +35,39 @@ const createAndSaveUser = async (userNameString) => {
   return user
 }
 
+const createAndSaveExercise = async (id, description, duration, date) => {
+  const exercise = new Exercise ({
+    _id: id,
+    description,
+    duration,
+    date
+  })
+  await exercise.populate({path: "username", select: {username: 1}})
+  await exercise.save()
+  return exercise
+}
+
+const updateLogs = async (exercise) => {
+  let log = await Log.findOne({'_id': exercise._id})
+  if (!log) {
+    let exercises = await Exercise.find({'_id': exercise._id}).select({'username': -1, '_id': -1})
+    log = await new Log({
+      _id: exercise._id,
+      log: exercises
+    })
+    await log.populate({path: "username", select: {username: 1}})
+    await log.save()
+  } else {
+    const {description, duration, date} = exercise
+    log.log.append({
+      description: description,
+      duration: duration,
+      date: date
+    })
+    await log.save()
+  }
+}
+
 const getAllUsers = async () => {
   const users = await User.find()
   return users
@@ -45,7 +78,7 @@ const getAllUsers = async () => {
 app
   .post('/api/users', async (req, res) => {
     try {
-      const user = await createAndSaveUser(req.username)
+      const user = await createAndSaveUser(req.body.username)
       res.json(user)
     }
     catch (error) {
@@ -62,6 +95,15 @@ app
     }
   })
   .post('/api/users/:id/exercises', async (req, res) => {
-
+    try {
+      const {_id, description, duration, date} = req.body
+      const validatedDate = !date?new Date().toDateString():date
+      const exercise = await createAndSaveExercise(_id, description, duration, validatedDate)
+      await updateLogs(exercise)
+      res.json(exercise)
+    }
+    catch (error) {
+      console.log(error.message)
+    }
   })
   
