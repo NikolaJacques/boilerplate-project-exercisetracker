@@ -130,7 +130,7 @@ app
   })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
-      const user = await User.findOne({"_id": req.body.id})
+      const user = await User.findOne({"_id": req.params.id})
       if (Object.keys(req.query).length) {
         res.json(user)
       } else {
