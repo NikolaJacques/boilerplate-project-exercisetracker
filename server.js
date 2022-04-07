@@ -131,7 +131,8 @@ app
   .get('/api/users/:id/logs', async (req, res) => {
     try {
       const user = await User.findOne({"_id": req.params.id})
-      res.json(user.log)
+      const log = user.log.select('description duration date')
+      res.json(log)
       /* if (Object.keys(req.query).length) {
         res.json(user)
       } else {
