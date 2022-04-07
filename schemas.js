@@ -24,10 +24,6 @@ const {Schema} = mongoose
     count: {
         type: Number
     },
-    _id: {
-      type: String,
-      required: true
-    },
     log: {
       type: [exerciseSchema],
       default: []
