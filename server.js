@@ -121,7 +121,7 @@ app
     try {
       const {_id, description, duration, date} = req.body
       const validatedDate = !date?new Date().toDateString():date
-      const exercise = await updateUser(_id, description, duration, validatedDate)
+      const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
       res.json(exercise)
     }
     catch (error) {
@@ -145,5 +145,5 @@ app
     }
   })
   
-  createAndSaveUser("Hubert Humphrey")
+  // updateUser('624f04fbaaf8eb9cbb8cfc42',"windmilling", 2, "2022-04-06")
   
