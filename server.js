@@ -38,7 +38,11 @@ const createAndSaveUser = async (userNameString) => {
     username : userNameString
   })
   await user.save()
-  return user
+  const {_id, username} = user
+  return {
+    _id: _id, 
+    username: username
+  }
 }
 
 const updateUser = async (_id, description, duration, date) => {
@@ -48,7 +52,7 @@ const updateUser = async (_id, description, duration, date) => {
     duration,
     date
   }
-  await user.log.append(exercise)
+  await user.log.push(exercise)
   await user.save()
   return {...exercise, _id: user._id, username: user.username}
 }
