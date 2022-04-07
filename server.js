@@ -131,14 +131,15 @@ app
   .get('/api/users/:id/logs', async (req, res) => {
     try {
       const user = await User.findOne({"_id": req.params.id})
-      if (Object.keys(req.query).length) {
+      res.json(user)
+      /* if (Object.keys(req.query).length) {
         res.json(user)
       } else {
         res.json({
           ...user,
           log: filterLogs(user.log, req.query)
         })
-      }
+      } */
     }
     catch (error) {
       res.json(error.message)
