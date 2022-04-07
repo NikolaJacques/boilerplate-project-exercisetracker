@@ -5,7 +5,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
-const {User, Exercise, userLog} = schemas
+const {User} = schemas
 
 app.use(cors())
 app.use(express.static('public'))
@@ -41,37 +41,16 @@ const createAndSaveUser = async (userNameString) => {
   return user
 }
 
-const createAndSaveExercise = async (_id, description, duration, date) => {
-  const exercise = new Exercise ({
-    _id,
+const updateUser = async (_id, description, duration, date) => {
+  const user = await User.findOne({"_id": _id})
+  const exercise = {
     description,
     duration,
     date
-  })
-  await exercise.populate({path: "username", select: {username: 1}})
-  await exercise.save()
-  return exercise
-}
-
-const updateLogs = async (exercise) => {
-  let log = await userLog.findOne({'_id': exercise._id})
-  if (!log) {
-    let exercises = await Exercise.find({'_id': exercise._id}).select({'username': -1, '_id': -1})
-    log = await new userLog({
-      _id: exercise._id,
-      log: exercises
-    })
-    await log.populate({path: "username", select: {username: 1}})
-    await log.save()
-  } else {
-    const {description, duration, date} = exercise
-    log.log.append({
-      description: description,
-      duration: duration,
-      date: date
-    })
-    await log.save()
   }
+  await user.log.append(exercise)
+  await user.save()
+  return {...exercise, _id: user._id, username: user.username}
 }
 
 const getAllUsers = async () => {
@@ -138,8 +117,7 @@ app
     try {
       const {_id, description, duration, date} = req.body
       const validatedDate = !date?new Date().toDateString():date
-      const exercise = await createAndSaveExercise(_id, description, duration, validatedDate)
-      await updateLogs(exercise)
+      const exercise = await updateUser(_id, description, duration, validatedDate)
       res.json(exercise)
     }
     catch (error) {
@@ -148,13 +126,13 @@ app
   })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
-      const logs = await userLog.findOne({"_id": req.body.id})
+      const user = await User.findOne({"_id": req.body.id})
       if (Object.keys(req.query).length) {
-        res.json(logs)
+        res.json(user)
       } else {
         res.json({
-          ...logs,
-          log: filterLogs(logs.log, req.query)
+          ...user,
+          log: filterLogs(user.log, req.query)
         })
       }
     }
