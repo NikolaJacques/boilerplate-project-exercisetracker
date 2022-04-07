@@ -41,12 +41,12 @@ const createAndSaveUser = async (userNameString) => {
   const {_id, username} = user
   return {
     _id: _id, 
-    username: username
+    username: username  
   }
 }
 
 const updateUser = async (id, description, duration, date) => {
-  const user = await User.findOne({"_id": id})
+  const user = await User.findOne({_id: id})
   const exercise = {
     description,
     duration,
