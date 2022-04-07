@@ -45,14 +45,14 @@ const createAndSaveUser = async (userNameString) => {
   }
 }
 
-const updateUser = async (_id, description, duration, date) => {
-  const user = await User.findOne({"_id": _id})
+const updateUser = async (id, description, duration, date) => {
+  const user = await User.findOne({"_id": id})
   const exercise = {
     description,
     duration,
     date
   }
-  // await user.log.push(exercise)
+  await user.log.push(exercise)
   await user.save()
   return {...exercise, _id: user._id, username: user.username}
 }
