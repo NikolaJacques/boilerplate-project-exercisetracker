@@ -54,7 +54,7 @@ const updateUser = async (id, description, duration, date) => {
   }
   await user.log.push(exercise)
   await user.save()
-  return {...exercise, _id: user._id, username: user.username}
+  return {_id: user._id, username: user.username, ...exercise}
 }
 
 const getAllUsers = async () => {
