@@ -118,8 +118,7 @@ app
     }   
   })
   .post('/api/users/:id/exercises', async (req, res) => {
-      res.send(req.body)
-/*     try {
+    try {
       const {_id, description, duration, date} = req.body
       const validatedDate = !date?new Date().toDateString():date
       const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
@@ -127,7 +126,7 @@ app
     }
     catch (error) {
       res.json(error.message)
-    } */
+    }
   })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
@@ -145,12 +144,6 @@ app
       res.json(error.message)
     }
   })
-  
-// updateUser('624f04fbaaf8eb9cbb8cfc42',"windmilling", 2, "2022-04-06")
-//   const result = async () => { const result = await User.findOne({_id:"624f096be562a0b3b7d08652"})
-// console.log(result)}
-
-// result()
 
 
 
