@@ -28,7 +28,10 @@ const {Schema} = mongoose
       type: String,
       required: true
     },
-    log: [exerciseSchema]
+    log: {
+      type: [exerciseSchema],
+      default: []
+    }
   })
 
   userSchema.pre('save', function(next){
