@@ -52,7 +52,7 @@ const updateUser = async (_id, description, duration, date) => {
     duration,
     date
   }
-  await user.log.push(exercise)
+  // await user.log.push(exercise)
   await user.save()
   return {...exercise, _id: user._id, username: user.username}
 }
