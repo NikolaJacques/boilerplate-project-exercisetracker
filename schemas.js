@@ -1,20 +1,5 @@
 const mongoose = require('mongoose')
 const {Schema} = mongoose
-
-  const exerciseSchema = new Schema({
-      description: {
-        type: String,
-        required: true
-      },
-      duration: {
-        type: Number,
-        required: true
-      },
-      date: {
-        type: String,
-        required: true
-      }
-  })
   
   const userSchema = new Schema({
     username: {
@@ -25,7 +10,22 @@ const {Schema} = mongoose
         type: Number
     },
     log: {
-      type: [exerciseSchema],
+      type: [
+        {
+          description: {
+          type: String,
+          required: true
+        },
+        duration: {
+          type: Number,
+          required: true
+        },
+        date: {
+          type: String,
+          required: true
+        }
+      }
+    ],
       default: []
     }
   })
