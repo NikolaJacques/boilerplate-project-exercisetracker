@@ -128,6 +128,15 @@ app
       res.json(error.message)
     }
   })
+  .get('/api/users/:id', async (req,res) => {
+    try {
+      const user = await User.findOne({_id: req.body._id})
+      res.json(user)
+    }
+    catch (error) {
+      res.json(error.message)
+    }
+  })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
       const user = await User.findOne({"_id": req.params.id})
