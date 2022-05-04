@@ -122,7 +122,7 @@ app
     try {
       const populateObj = {
         path: 'log',
-        select: '-_id'
+        select: '-_id -__v'
       }
       // add filtering options from query, if applicable
       if (req.query.from){
