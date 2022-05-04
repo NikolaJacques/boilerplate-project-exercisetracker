@@ -38,10 +38,9 @@ const createAndSaveUser = async (userNameString) => {
     username : userNameString
   })
   await user.save()
-  const {_id, username} = user
   return {
-    _id: _id, 
-    username: username  
+    _id: user._id, 
+    username: user.username  
   }
 }
 
