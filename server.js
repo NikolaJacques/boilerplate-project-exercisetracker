@@ -5,7 +5,6 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const schemas = require('./schemas');
-const match = require('nodemon/lib/monitor/match');
 const {User, Exercise} = schemas
 
 app.use(cors())
@@ -52,6 +51,7 @@ const updateUser = async (id, description, duration, date) => {
     duration,
     date
   })
+  await exercise.save()
   await user.log.push(exercise._id)
   await user.save()
   return {
