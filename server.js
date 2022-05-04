@@ -58,7 +58,7 @@ const updateUser = async (id, description, duration, date) => {
     username: user.username, 
     description: exercise.description,
     duration: exercise.duration,
-    date: exercise.date, 
+    date: exercise.date.toDateString(),
     _id: user._id
   }
 }
@@ -92,7 +92,7 @@ app
   .post('/api/users/:id/exercises', async (req, res) => {
     try {
       const {_id, description, duration, date} = req.body
-      const validatedDate = new Date(!date?'':date).toDateString()
+      const validatedDate = new Date(!date?'':date)
       const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
       res.json(exercise)
     }
@@ -128,9 +128,9 @@ app
       if (req.query.from){
         const match = {}
         if(req.query.to){
-          match.date = {$gte:req.query.from, $lte:req.query.to}
+          match.date = {$gte:new Date(req.query.from), $lte:new Date(req.query.to)}
         } else {
-          match.date = {$gte:req.query.from}
+          match.date = {$gte:new Date(req.query.from)}
         }
         populateObj.match = match
       }
