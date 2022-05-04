@@ -4,7 +4,8 @@ const cors = require('cors')
 require('dotenv').config()
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
-const schemas = require('./schemas')
+const schemas = require('./schemas');
+const match = require('nodemon/lib/monitor/match');
 const {User, Exercise} = schemas
 
 app.use(cors())
@@ -144,9 +145,28 @@ app
   })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
+      const populateObj = {
+        path: 'log',
+        select: '-_id'
+      }
+      // add filtering options from query, if applicable
+      if (req.query.from){
+        const match = {}
+        if(req.query.to){
+          match.date = {$gte:req.query.from, $lte:req.query.to}
+        } else {
+          match.date = {$gte:req.query.from}
+        }
+        populateObj.match = match
+      }
+      if (req.query.limit){
+        populateObj.options = { limit: req.query.limit }
+      }
+      // get user and populate log
       const user = await User
         .findOne({"_id": req.params.id}, '-__v')
-        .populate('log', '-_id')
+        .populate(populateObj)
+      // return user
       res.json(user)
       /* if (Object.keys(req.query).length) {
         res.json(user)
