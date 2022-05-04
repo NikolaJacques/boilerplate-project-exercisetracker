@@ -68,40 +68,6 @@ const getAllUsers = async () => {
   return users
 }
 
-const filterLogs = (logs, params) => {
-  return logs
-    // from filter
-    .filter( (log) => {
-      if (!params.from) {
-        return log
-      } else {
-        if (new Date(logs.date) >= new Date(params.from)){
-          return log
-        }
-      }
-    })
-    // to filter
-    .filter( (log) => { 
-      if (!params.to) {
-        return log
-      } else {
-        if (new Date(logs.date) <= new Date(params.to)){
-          return log
-        }
-      }
-    })
-    // limit filter
-    .filter( (log, index) => {
-      if (!params.limit) {
-        return log
-      } else {
-        if (index < params.limit) {
-          return log
-        }
-      }
-    })
-}
-
 // handlers
 
 app
@@ -168,14 +134,6 @@ app
         .populate(populateObj)
       // return user
       res.json(user)
-      /* if (Object.keys(req.query).length) {
-        res.json(user)
-      } else {
-        res.json({
-          ...user,
-          log: filterLogs(user.log, req.query)
-        })
-      } */
     }
     catch (error) {
       res.json(error.message)
