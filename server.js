@@ -141,8 +141,14 @@ app
       const user = await User
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
+      // convert dates to strings
+      const logArray = user.log
+      logArray.map(object => object.date = object.date.toDateString())
       // return user
-      res.json(user)
+      res.json({
+        ...user,
+        log: logArray
+      })
     }
     catch (error) {
       res.json(error.message)
