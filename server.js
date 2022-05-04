@@ -5,7 +5,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const schemas = require('./schemas')
-const {User} = schemas
+const {User, Exercise} = schemas
 
 app.use(cors())
 app.use(express.static('public'))
