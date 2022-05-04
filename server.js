@@ -145,7 +145,7 @@ app
       const logArray = user.log
       logArray.map(object => object.date = object.date.toDateString())
       // return user
-      res.send(user.log)
+      res.text(user.log)
 /*       res.json({
         _id: user._id,
         username: user.username,
