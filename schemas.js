@@ -2,14 +2,11 @@ const mongoose = require('mongoose')
 const {Schema} = mongoose
   
   const userSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     username: {
       type: String,
       required: true
     },
-    count: {
-        type: Number
-    },
+    count: Number,
     log: {
       type: [{ type: Schema.Types.ObjectId, ref: 'Exercise' }],
       default: []
@@ -17,7 +14,6 @@ const {Schema} = mongoose
   })
 
   const exerciseSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     description: {
       type: String,
       required: true
