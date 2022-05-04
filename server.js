@@ -109,6 +109,15 @@ app
       res.json(error.message)
     }
   })
+  .get('/api/exercises/:id', async (req,res) =>   {
+    try {
+      const exercise = await Exercise.findOne({_id:req.params.id})
+      res.json(exercise)
+    }
+    catch (error) {
+      res.json(error.message)
+    }
+  })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
       const populateObj = {
