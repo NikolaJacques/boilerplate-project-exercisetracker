@@ -142,13 +142,10 @@ app
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
       // convert dates to strings
-      const logArray = user.log
-      logArray.map(object => object.date = object.date.toDateString())
+      const userClone = user
+      userClone.log.map(object => object.date = object.date.toDateString())
       // return user
-      res.json({
-        ...user,
-        log: logArray
-      })
+      res.json(userClone)
     }
     catch (error) {
       res.json(error.message)
