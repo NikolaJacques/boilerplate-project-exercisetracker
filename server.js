@@ -49,7 +49,7 @@ const updateUser = async (id, description, duration, date) => {
   const exercise = new Exercise ({
     description,
     duration,
-    date
+    dateObj:date
   })
   await exercise.save()
   await user.log.push(exercise._id)
@@ -58,7 +58,7 @@ const updateUser = async (id, description, duration, date) => {
     username: user.username, 
     description: exercise.description,
     duration: exercise.duration,
-    date: exercise.date.toDateString(),
+    date: exercise.date,
     _id: user._id
   }
 }
@@ -122,15 +122,15 @@ app
     try {
       const populateObj = {
         path: 'log',
-        select: '-_id -__v'
+        select: '-dateObj -_id -__v'
       }
       // add filtering options from query, if applicable
       if (req.query.from){
         const match = {}
         if(req.query.to){
-          match.date = {$gte:new Date(req.query.from), $lte:new Date(req.query.to)}
+          match.dateObj = {$gte:new Date(req.query.from), $lte:new Date(req.query.to)}
         } else {
-          match.date = {$gte:new Date(req.query.from)}
+          match.dateObj = {$gte:new Date(req.query.from)}
         }
         populateObj.match = match
       }
@@ -141,17 +141,13 @@ app
       const user = await User
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
-      // convert dates to strings
-      const logArray = user.log
-      logArray.map(object => object.date = object.date.toDateString())
       // return user
-      res.send(user.log)
-/*       res.json({
+      res.json({
         _id: user._id,
         username: user.username,
         log: logArray,
         count: user.count
-      }) */
+      })
     }
     catch (error) {
       res.json(error.message)

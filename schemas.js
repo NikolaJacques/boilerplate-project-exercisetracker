@@ -22,15 +22,20 @@ const {Schema} = mongoose
       type: Number,
       required: true
     },
-    date: {
+    dateObj: {
       type: Date,
       required: true
-    }
+    },
+    date: String
   })
 
   userSchema.pre('save', function(next){
-      this.count = this.log.length
-      next()
+    this.count = this.log.length
+    next()
+  })
+  exerciseSchema.pre('save', function(next){
+    this.date = this.dateObj.toDateString()
+    next()
   })
   
   module.exports.User = mongoose.model("User", userSchema)
