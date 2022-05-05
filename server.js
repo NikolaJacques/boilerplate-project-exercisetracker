@@ -142,12 +142,7 @@ app
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
       // return user
-      res.json({
-        _id: user._id,
-        username: user.username,
-        log: logArray,
-        count: user.count
-      })
+      res.json(user)
     }
     catch (error) {
       res.json(error.message)
