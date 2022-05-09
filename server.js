@@ -92,8 +92,9 @@ app
   })
   .post('/api/users/:id/exercises', async (req, res) => {
     try {
-      const {_id, description, duration, date} = req.body
-      const exercise = await updateUser(_id, description, parseInt(duration), date)
+      const {description, duration, date} = req.body
+      const id = req.params.id
+      const exercise = await updateUser(id, description, parseInt(duration), date)
       res.json(exercise)
     }
     catch (error) {
