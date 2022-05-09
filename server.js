@@ -139,9 +139,8 @@ app
         populateObj.options = { limit: req.query.limit }
       }
       // get user and populate log
-      const user = await User.findOne({"_id": req.params.id}, '-__v')
+      const user = await User.findOne({"_id": req.params.id}, '-__v').populate(populateObj)
       if (!user) throw new Error('error fetching logs')
-      user.populate(populateObj)
       // return user
       res.json(user)
     }
