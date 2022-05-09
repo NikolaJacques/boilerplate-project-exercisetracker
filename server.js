@@ -93,7 +93,7 @@ app
   .post('/api/users/:id/exercises', async (req, res) => {
     try {
       const {_id, description, duration, date} = req.body
-      const validatedDate = new Date(!date?'':date)
+      const validatedDate = date?new Date(date):new Date()
       const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
       res.json(exercise)
     }
