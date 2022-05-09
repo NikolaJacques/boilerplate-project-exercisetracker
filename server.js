@@ -45,24 +45,22 @@ const createAndSaveUser = async (userNameString) => {
 }
 
 const updateUser = async (id, description, duration, date) => {
-  User.findOne({_id: id}, async (error, user) => {
-    if (error) {throw new Error(error)}
-    const exercise = new Exercise ({
-      description,
-      duration,
-      dateObj:date
-    })
-    await exercise.save()
-    await user.log.push(exercise._id)
-    await user.save()
-    return {
-      username: user.username, 
-      description: exercise.description,
-      duration: exercise.duration,
-      date: exercise.date,
-      _id: user._id
-    }
+  const user = User.findOne({_id: id})
+  const exercise = new Exercise ({
+    description,
+    duration,
+    dateObj:date
   })
+  await exercise.save()
+  await user.log.push(exercise._id)
+  await user.save()
+  return {
+    username: user.username, 
+    description: exercise.description,
+    duration: exercise.duration,
+    date: exercise.date,
+    _id: user._id
+  }
 }
 
 const getAllUsers = async () => {
@@ -122,14 +120,6 @@ app
         populateObj.options = { limit: req.query.limit }
       }
       // get user and populate log
-<<<<<<< HEAD
-      User.findOne({"_id": req.params.id}, '-__v', async (error, user) => {
-          if (error) {throw new Error(error)}
-          await user.populate(populateObj)
-          // return user
-          res.json(user)
-        })
-=======
       const user = await User
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
@@ -140,7 +130,6 @@ app
         log: logArray,
         count: user.count
       })
->>>>>>> parent of facb4ec (fixed user return object log handler)
     }
     catch (error) {
       res.json(error.message)
