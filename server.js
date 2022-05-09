@@ -45,7 +45,7 @@ const createAndSaveUser = async (userNameString) => {
 }
 
 const updateUser = async (id, description, duration, date) => {
-  const user = User.findOne({_id: id})
+  const user = await User.findOne({_id: id})
   const exercise = new Exercise ({
     description,
     duration,
@@ -100,6 +100,24 @@ app
       res.json(error.message)
     }
   })
+  .get('/api/users/:id', async (req,res) => {
+    try {
+      const user = await User.findOne({_id: req.params.id})
+      res.json(user)
+    }
+    catch (error) {
+      res.json(error.message)
+    }
+  })
+  .get('/api/exercises/:id', async (req,res) =>   {
+    try {
+      const exercise = await Exercise.findOne({_id:req.params.id})
+      res.json(exercise)
+    }
+    catch (error) {
+      res.json(error.message)
+    }
+  })
   .get('/api/users/:id/logs', async (req, res) => {
     try {
       const populateObj = {
@@ -124,12 +142,7 @@ app
         .findOne({"_id": req.params.id}, '-__v')
         .populate(populateObj)
       // return user
-      res.json({
-        _id: user._id,
-        username: user.username,
-        log: logArray,
-        count: user.count
-      })
+      res.json(user)
     }
     catch (error) {
       res.json(error.message)
