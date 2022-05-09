@@ -46,7 +46,7 @@ const createAndSaveUser = async (userNameString) => {
 
 const updateUser = async (id, description, duration, date) => {
   const user = await User.findOne({_id: id})
-  if (!user) throw new Error()
+  if (!user) throw new Error('error: user not found')
   const exercise = new Exercise ({
     description,
     duration,
@@ -140,7 +140,7 @@ app
       }
       // get user and populate log
       const user = await User.findOne({"_id": req.params.id}, '-__v')
-      if (!user) throw new Error()
+      if (!user) throw new Error('error: user not found')
       user.populate(populateObj)
       // return user
       res.json(user)
