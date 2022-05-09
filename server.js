@@ -45,7 +45,7 @@ const createAndSaveUser = async (userNameString) => {
 }
 
 const updateUser = async (id, description, duration, date) => {
-  User.findOne({_id: id}, (error, user) => {
+  User.findOne({_id: id}, async (error, user) => {
     if (error) {
       throw new Error(error)
     }
