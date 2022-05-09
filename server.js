@@ -46,6 +46,7 @@ const createAndSaveUser = async (userNameString) => {
 
 const updateUser = async (id, description, duration, date) => {
   const user = await User.findOne({_id: id})
+  if (!user) throw new Error()
   const exercise = new Exercise ({
     description,
     duration,
@@ -138,9 +139,9 @@ app
         populateObj.options = { limit: req.query.limit }
       }
       // get user and populate log
-      const user = await User
-        .findOne({"_id": req.params.id}, '-__v')
-        .populate(populateObj)
+      const user = await User.findOne({"_id": req.params.id}, '-__v')
+      if (!user) throw new Error()
+      user.populate(populateObj)
       // return user
       res.json(user)
     }
