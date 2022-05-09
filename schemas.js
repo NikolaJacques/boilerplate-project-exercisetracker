@@ -24,7 +24,8 @@ const {Schema} = mongoose
     },
     dateObj: {
       type: Date,
-      required: true
+      required: true,
+      default: new Date()
     },
     date: String
   })

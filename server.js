@@ -49,9 +49,9 @@ const updateUser = async (id, description, duration, date) => {
   if (!user) throw new Error('error: user not found')
   const exercise = new Exercise ({
     description,
-    duration,
-    dateObj:date
+    duration
   })
+  if(date) exercise.dateObj=date
   await exercise.save()
   await user.log.push(exercise._id)
   await user.save()
@@ -93,8 +93,7 @@ app
   .post('/api/users/:id/exercises', async (req, res) => {
     try {
       const {_id, description, duration, date} = req.body
-      const validatedDate = date?new Date(date):new Date()
-      const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
+      const exercise = await updateUser(_id, description, parseInt(duration), date)
       res.json(exercise)
     }
     catch (error) {
