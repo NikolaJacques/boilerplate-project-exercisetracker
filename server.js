@@ -45,22 +45,26 @@ const createAndSaveUser = async (userNameString) => {
 }
 
 const updateUser = async (id, description, duration, date) => {
-  const user = await User.findOne({_id: id})
-  const exercise = new Exercise ({
-    description,
-    duration,
-    dateObj:date
+  User.findOne({_id: id}, (error, user) => {
+    if (error) {
+      throw new Error(error)
+    }
+    const exercise = new Exercise ({
+      description,
+      duration,
+      dateObj:date
+    })
+    await exercise.save()
+    await user.log.push(exercise._id)
+    await user.save()
+    return {
+      username: user.username, 
+      description: exercise.description,
+      duration: exercise.duration,
+      date: exercise.date,
+      _id: user._id
+    }
   })
-  await exercise.save()
-  await user.log.push(exercise._id)
-  await user.save()
-  return {
-    username: user.username, 
-    description: exercise.description,
-    duration: exercise.duration,
-    date: exercise.date,
-    _id: user._id
-  }
 }
 
 const getAllUsers = async () => {
@@ -94,24 +98,6 @@ app
       const {_id, description, duration, date} = req.body
       const validatedDate = new Date(!date?'':date)
       const exercise = await updateUser(_id, description, parseInt(duration), validatedDate)
-      res.json(exercise)
-    }
-    catch (error) {
-      res.json(error.message)
-    }
-  })
-  .get('/api/users/:id', async (req,res) => {
-    try {
-      const user = await User.findOne({_id: req.params.id})
-      res.json(user)
-    }
-    catch (error) {
-      res.json(error.message)
-    }
-  })
-  .get('/api/exercises/:id', async (req,res) =>   {
-    try {
-      const exercise = await Exercise.findOne({_id:req.params.id})
       res.json(exercise)
     }
     catch (error) {
