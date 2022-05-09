@@ -122,12 +122,25 @@ app
         populateObj.options = { limit: req.query.limit }
       }
       // get user and populate log
+<<<<<<< HEAD
       User.findOne({"_id": req.params.id}, '-__v', async (error, user) => {
           if (error) {throw new Error(error)}
           await user.populate(populateObj)
           // return user
           res.json(user)
         })
+=======
+      const user = await User
+        .findOne({"_id": req.params.id}, '-__v')
+        .populate(populateObj)
+      // return user
+      res.json({
+        _id: user._id,
+        username: user.username,
+        log: logArray,
+        count: user.count
+      })
+>>>>>>> parent of facb4ec (fixed user return object log handler)
     }
     catch (error) {
       res.json(error.message)
